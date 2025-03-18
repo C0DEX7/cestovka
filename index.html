@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Central Europe Travel - Your Journey Awaits</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #1a1a1a;
+            color: #ffffff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background-color: #00205b;
+            color: white;
+            padding: 15px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 30px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        nav ul li a:hover {
+            color: #ffcc00;
+        }
+
+        .search-bar {
+            background: #2d2d2d;
+            padding: 20px 0;
+            margin-top: 70px;
+        }
+
+        .search-form {
+            display: flex;
+            gap: 15px;
+            max-width: 900px;
+            margin: 0 auto;
+            background: #3a3a3a;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .search-form input, .search-form select {
+            padding: 12px 15px;
+            font-size: 16px;
+            border: 2px solid #003087;
+            border-radius: 8px;
+            flex: 1;
+            background: #4a4a4a;
+            color: #ffffff;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .search-form input:focus, .search-form select:focus {
+            outline: none;
+            border-color: #ffcc00;
+            box-shadow: 0 0 5px rgba(255, 204, 0, 0.5);
+        }
+
+        .search-form select {
+            appearance: none;
+            background: #4a4a4a url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"><path fill="%23ffffff" d="M7 10l5 5 5-5z"/></svg>') no-repeat right 15px center;
+            padding-right: 35px;
+        }
+
+        .search-form input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(100%);
+        }
+
+        .search-button {
+            background-color: #ffcc00;
+            color: #00205b;
+            padding: 12px 25px;
+            border: none;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .search-button:hover {
+            background-color: #e6b800;
+        }
+
+        .autocomplete-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 20px;
+            width: calc(25% - 30px);
+            background: #3a3a3a;
+            border: 1px solid #003087;
+            border-radius: 8px;
+            max-height: 200px;
+            overflow-y: auto;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            display: none;
+        }
+
+        .autocomplete-item {
+            padding: 10px 15px;
+            font-size: 16px;
+            color: #ffffff;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .autocomplete-item:hover {
+            background-color: #ffcc00;
+            color: #00205b;
+        }
+
+        .hero {
+            height: 400px;
+            background: url('https://via.placeholder.com/1920x1080?text=Central+Europe') no-repeat center center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+
+        .hero-content h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .hero-content p {
+            font-size: 20px;
+            margin-bottom: 30px;
+        }
+
+        .trips {
+            padding: 40px 0;
+            background-color: #1a1a1a;
+        }
+
+        .trips h2 {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 40px;
+            color: #ffcc00;
+        }
+
+        .trip-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .trip-card {
+            background: #3a3a3a;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .trip-card h3 {
+            font-size: 22px;
+            margin: 15px 0;
+            color: #ffcc00;
+        }
+
+        .trip-card p {
+            font-size: 16px;
+            color: #cccccc;
+            margin-bottom: 15px;
+        }
+
+        .trip-slider {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .trip-slides {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .trip-slide {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: none;
+        }
+
+        .trip-slide.active {
+            display: block;
+        }
+
+        .city-name {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-size: 14px;
+            font-weight: bold;
+            z-index: 10;
+        }
+
+        .trip-prev, .trip-next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #ffcc00; /* Changed to yellow for better visibility */
+            color: #00205b;      /* Dark blue text for contrast */
+            border: none;
+            padding: 12px 16px;  /* Increased size */
+            cursor: pointer;
+            font-size: 20px;     /* Larger arrows */
+            border-radius: 50%;  /* Circular shape */
+            opacity: 0.9;        /* Slightly transparent */
+            transition: opacity 0.3s ease, background-color 0.3s ease;
+            z-index: 11;         /* Ensure above city name */
+        }
+
+        .trip-prev:hover, .trip-next:hover {
+            opacity: 1;          /* Full opacity on hover */
+            background: #e6b800; /* Darker yellow on hover */
+        }
+
+        .trip-prev {
+            left: 15px;         /* Slightly more padding from edge */
+        }
+
+        .trip-next {
+            right: 15px;        /* Slightly more padding from edge */
+        }
+
+        .reserve-btn {
+            background-color: #003087;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+
+        .reserve-btn:hover {
+            background-color: #00205b;
+        }
+
+        .slider-section {
+            padding: 20px 0;
+            background-color: #2d2d2d;
+        }
+
+        .slider {
+            position: relative;
+            max-width: 1200px;
+            margin: 20px auto;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        .slides {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .slide {
+            width: 100%;
+            height: 600px;
+            object-fit: cover;
+            display: none;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        .prev, .next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.3);
+            color: #000000;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .prev {
+            left: 10px;
+        }
+
+        .next {
+            right: 10px;
+        }
+
+        .offers {
+            padding: 60px 0;
+            background-color: #1f1f1f;
+        }
+
+        .offers h2 {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 40px;
+            color: #ffcc00;
+        }
+
+        .offer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .offer-card {
+            background: #3a3a3a;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .offer-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .offer-card h3 {
+            font-size: 22px;
+            margin: 15px 0;
+            color: #ffcc00;
+        }
+
+        .offer-card p {
+            font-size: 16px;
+            color: #cccccc;
+            margin-bottom: 15px;
+        }
+
+        .book-now {
+            background-color: #003087;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+
+        .book-now:hover {
+            background-color: #00205b;
+        }
+
+        footer {
+            background-color: #00205b;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup-content {
+            background: #3a3a3a;
+            padding: 20px;
+            border-radius: 8px;
+            width: 400px;
+            max-width: 90%;
+            text-align: center;
+        }
+
+        .popup-content h3 {
+            color: #ffcc00;
+            margin-bottom: 20px;
+        }
+
+        .popup-content form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .popup-content input, .popup-content select {
+            padding: 12px 15px;
+            font-size: 16px;
+            border: 2px solid #003087;
+            border-radius: 8px;
+            background: #4a4a4a;
+            color: #ffffff;
+        }
+
+        .popup-content select {
+            appearance: none;
+            background: #4a4a4a url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"><path fill="%23ffffff" d="M7 10l5 5 5-5z"/></svg>') no-repeat right 15px center;
+            padding-right: 35px;
+        }
+
+        .popup-content input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(100%);
+        }
+
+        .popup-content button {
+            background-color: #ffcc00;
+            color: #00205b;
+            padding: 12px;
+            border: none;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .popup-content button:hover {
+            background-color: #e6b800;
+        }
+
+        .close-popup {
+            background-color: #666;
+            color: white;
+            margin-top: 10px;
+        }
+
+        .close-popup:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">Central Europe Travel</div>
+            <nav>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Destinations</a></li>
+                    <li><a href="#">Tours</a></li>
+                    <li><a href="#">Last Minute</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="search-bar">
+        <div class="container">
+            <div class="search-form">
+                <input type="text" placeholder="Where to?" id="destination">
+                <div class="autocomplete-dropdown" id="autocomplete"></div>
+                <select id="people">
+                    <option value="" disabled selected>How many people?</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                </select>
+                <input type="date" id="departure" placeholder="When?">
+                <button class="search-button">Search</button>
+            </div>
+        </div>
+    </div>
+
+    <section class="slider-section">
+        <div class="container">
+            <div class="slider">
+                <div class="slides">
+                    <img src="slider/prague-castle.jpg" alt="Prague Castle" class="slide active">
+                    <img src="slider/vienna-schonbrunn.jpeg" alt="Vienna Schönbrunn" class="slide">
+                    <img src="slider/budapest-parlament.jpg" alt="Budapest Parliament" class="slide">
+                    <img src="slider/berlin.jpg" alt="Berlin Brandenburg gate" class="slide">
+                    <img src="slider/warsaw.jpg" alt="warsaw palace of culture" class="slide">
+                </div>
+                <button class="prev">❮</button>
+                <button class="next">❯</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Discover Central Europe</h1>
+            <p>Explore the heart of Europe with unforgettable trips to Prague, Vienna, Budapest, and more!</p>
+        </div>
+    </section>
+
+    <section class="trips">
+        <div class="container">
+            <h2>Featured Trips Around Central Europe</h2>
+            <div class="trip-grid">
+                <div class="trip-card">
+                    <div class="trip-slider">
+                        <div class="trip-slides">
+                            <img src="trip/vienna.jpg" alt="Vienna" class="trip-slide active" data-city="Vienna">
+                            <img src="trip/budapest.jpg" alt="Budapest" class="trip-slide" data-city="Budapest">
+                            <img src="trip/prague.jpg" alt="Prague" class="trip-slide" data-city="Prague">
+                        </div>
+                        <button class="trip-prev">❮</button>
+                        <button class="trip-next">❯</button>
+                    </div>
+                    <h3>Imperial Capitals Tour</h3>
+                    <p>7 days exploring Vienna, Budapest, and Prague. Visit grand palaces, historic castles, and charming old towns.</p>
+                    <button class="reserve-btn">Book now</button>
+                </div>
+                <div class="trip-card">
+                    <div class="trip-slider">
+                        <div class="trip-slides">
+                            <img src="trip/bratislava.jpg" alt="Bratislava" class="trip-slide active" data-city="Bratislava">
+                            <img src="trip/vienna.jpg" alt="Vienna" class="trip-slide" data-city="Vienna">
+                            <img src="trip/budapest.jpg" alt="Budapest" class="trip-slide" data-city="Budapest">
+                        </div>
+                        <button class="trip-prev">❮</button>
+                        <button class="trip-next">❯</button>
+                    </div>
+                    <h3>Danube River Journey</h3>
+                    <p>5 days cruising from Bratislava to Budapest with stops in Vienna and charming riverside villages.</p>
+                    <button class="reserve-btn">Book now</button>
+                </div>
+                <div class="trip-card">
+                    <div class="trip-slider">
+                        <div class="trip-slides">
+                            <img src="trip/prague.jpg" alt="Prague" class="trip-slide active" data-city="Prague">
+                            <img src="trip/ceskykrumlov.jpeg" alt="Český Krumlov" class="trip-slide" data-city="Český Krumlov">
+                            <img src="trip/kutnahora.jpg" alt="Kutná Hora" class="trip-slide" data-city="Kutná Hora">
+                        </div>
+                        <button class="trip-prev">❮</button>
+                        <button class="trip-next">❯</button>
+                    </div>
+                    <h3>Bohemian Adventure</h3>
+                    <p>6 days through Czech Republic - Prague, Český Krumlov, and Kutná Hora's famous bone church.</p>
+                    <button class="reserve-btn">Book now</button>
+                </div>
+                <div class="trip-card">
+                    <div class="trip-slider">
+                        <div class="trip-slides">
+                            <img src="trip/saltzburg.jpg" alt="Salzburg" class="trip-slide active" data-city="Salzburg">
+                            <img src="trip/munich.jpg" alt="Munich" class="trip-slide" data-city="Munich">
+                            <img src="trip/alps.jpeg" alt="Alps" class="trip-slide" data-city="Alps">
+                        </div>
+                        <button class="trip-prev">❮</button>
+                        <button class="trip-next">❯</button>
+                    </div>
+                    <h3>Alpine Escape</h3>
+                    <p>4 days in Salzburg and Munich, featuring stunning mountain views and Bavarian culture.</p>
+                    <button class="reserve-btn">Book now</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="offers">
+        <div class="container">
+            <h2>Popular Destinations</h2>
+            <div class="offer-grid">
+                <div class="offer-card">
+                    <img src="dest/prague.jpg" alt="Prague">
+                    <h3>Prague Getaway</h3>
+                    <p>4 days / 3 nights from €299</p>
+                    <button class="book-now">Book Now</button>
+                </div>
+                <div class="offer-card">
+                    <img src="dest/vienna.jpg" alt="Vienna">
+                    <h3>Vienna Weekend</h3>
+                    <p>3 days / 2 nights from €249</p>
+                    <button class="book-now">Book Now</button>
+                </div>
+                <div class="offer-card">
+                    <img src="dest/budapest.jpg" alt="Budapest">
+                    <h3>Budapest Adventure</h3>
+                    <p>5 days / 4 nights from €349</p>
+                    <button class="book-now">Book Now</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>© 2025 Central Europe Travel. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <div class="popup" id="reservePopup">
+        <div class="popup-content">
+            <h3>Reserve Your Trip</h3>
+            <form id="reserveForm">
+                <input type="date" id="reserveDate" required>
+                <select id="reservePeople" required>
+                    <option value="" disabled selected>How many people?</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                </select>
+                <button type="submit">Confirm Reservation</button>
+                <button type="button" class="close-popup">Close</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const destinations = [
+            "Prague", "Vienna", "Budapest", "Krakow", "Bratislava",
+            "Warsaw", "Ljubljana", "Zagreb", "Salzburg", "Munich",
+            "Brno", "Ostrava", "Pilsen", "Graz", "Linz",
+            "Innsbruck", "České Budějovice", "Olomouc", "Wroclaw", "Poznan",
+            "Gdansk", "Katowice", "Lodz", "Szczecin", "Bialystok",
+            "Maribor", "Celje", "Trieste", "Rijeka", "Split",
+            "Dubrovnik", "Nitra", "Košice", "Žilina", "Banská Bystrica",
+            "Berlin", "Hamburg", "Cologne", "Frankfurt", "Stuttgart",
+            "Dresden", "Leipzig", "Nuremberg", "Bremen", "Hannover",
+            "Zurich", "Geneva", "Bern", "Basel", "Lucerne",
+            "Lausanne", "St. Gallen", "Lugano", "Fribourg", "Winterthur",
+            "Klagenfurt", "Villach", "St. Pölten", "Eisenstadt"
+        ];
+        const destinationInput = document.getElementById('destination');
+        const autocompleteDropdown = document.getElementById('autocomplete');
+
+        destinationInput.addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            autocompleteDropdown.innerHTML = '';
+            if (!query) {
+                autocompleteDropdown.style.display = 'none';
+                return;
+            }
+
+            const matches = destinations.filter(dest => dest.toLowerCase().includes(query));
+            if (matches.length === 0) {
+                autocompleteDropdown.style.display = 'none';
+                return;
+            }
+
+            matches.forEach(match => {
+                const item = document.createElement('div');
+                item.className = 'autocomplete-item';
+                item.textContent = match;
+                item.addEventListener('click', () => {
+                    destinationInput.value = match;
+                    autocompleteDropdown.style.display = 'none';
+                });
+                autocompleteDropdown.appendChild(item);
+            });
+            autocompleteDropdown.style.display = 'block';
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!destinationInput.contains(e.target) && !autocompleteDropdown.contains(e.target)) {
+                autocompleteDropdown.style.display = 'none';
+            }
+        });
+
+        document.querySelector('.search-button').addEventListener('click', () => {
+            const destination = document.getElementById('destination').value;
+            const people = document.getElementById('people').value;
+            const departure = document.getElementById('departure').value;
+            alert(`Searching for: ${destination || 'Any destination'}, ${people || 'Any number of people'}, departing ${departure || 'anytime'}`);
+        });
+
+        // Main slider
+        const slides = document.querySelectorAll('.slide');
+        let currentSlide = 0;
+        let autoSlideInterval = null;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+        }
+
+        function startAutoSlide() {
+            if (!autoSlideInterval) {
+                autoSlideInterval = setInterval(() => {
+                    currentSlide = (currentSlide + 1) % slides.length;
+                    showSlide(currentSlide);
+                }, 5000);
+            }
+        }
+
+        function stopAutoSlide() {
+            if (autoSlideInterval) {
+                clearInterval(autoSlideInterval);
+                autoSlideInterval = null;
+            }
+        }
+
+        document.querySelector('.next').addEventListener('click', () => {
+            stopAutoSlide();
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        });
+
+        document.querySelector('.prev').addEventListener('click', () => {
+            stopAutoSlide();
+            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+            showSlide(currentSlide);
+        });
+
+        startAutoSlide();
+        showSlide(currentSlide);
+
+        // Trip sliders
+        document.querySelectorAll('.trip-card').forEach(card => {
+            const slider = card.querySelector('.trip-slider');
+            const slides = card.querySelectorAll('.trip-slide');
+            let currentTripSlide = 0;
+
+            // Create city name element
+            const cityName = document.createElement('div');
+            cityName.className = 'city-name';
+            slider.appendChild(cityName);
+
+            function showTripSlide(index) {
+                slides.forEach((slide, i) => {
+                    slide.classList.toggle('active', i === index);
+                    if (i === index) {
+                        cityName.textContent = slide.getAttribute('data-city');
+                    }
+                });
+            }
+
+            card.querySelector('.trip-next').addEventListener('click', () => {
+                currentTripSlide = (currentTripSlide + 1) % slides.length;
+                showTripSlide(currentTripSlide);
+            });
+
+            card.querySelector('.trip-prev').addEventListener('click', () => {
+                currentTripSlide = (currentTripSlide - 1 + slides.length) % slides.length;
+                showTripSlide(currentTripSlide);
+            });
+
+            showTripSlide(currentTripSlide);
+        });
+
+        // Popup functionality
+        const popup = document.getElementById('reservePopup');
+        const reserveForm = document.getElementById('reserveForm');
+        let currentTripTitle = '';
+
+        document.querySelectorAll('.reserve-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                currentTripTitle = button.parentElement.querySelector('h3').textContent;
+                popup.style.display = 'flex';
+            });
+        });
+
+        document.querySelector('.close-popup').addEventListener('click', () => {
+            popup.style.display = 'none';
+            reserveForm.reset();
+        });
+
+        popup.addEventListener('click', (e) => {
+            if (e.target === popup) {
+                popup.style.display = 'none';
+                reserveForm.reset();
+            }
+        });
+
+        reserveForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const date = document.getElementById('reserveDate').value;
+            const people = document.getElementById('reservePeople').value;
+            alert(`Reservation confirmed for ${currentTripTitle}:\nDate: ${date}\nPeople: ${people}`);
+            popup.style.display = 'none';
+            reserveForm.reset();
+        });
+
+        document.querySelectorAll('.book-now').forEach(button => {
+            button.addEventListener('click', () => {
+                alert('Thank you for your interest! Booking functionality coming soon.');
+            });
+        });
+    </script>
+</body>
+</html>
