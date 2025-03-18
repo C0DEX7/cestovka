@@ -690,16 +690,16 @@
 
     <script>
         const destinations = [
-            "Prague", "Vienna", "Budapest", "Krakow", "Bratislava",
-            "Warsaw", "Ljubljana", "Zagreb", "Salzburg", "Munich",
-            "Brno", "Ostrava", "Pilsen", "Graz", "Linz",
-            "Innsbruck", "České Budějovice", "Olomouc", "Wroclaw", "Poznan",
-            "Gdansk", "Katowice", "Lodz", "Szczecin", "Bialystok",
-            "Maribor", "Celje", "Trieste", "Rijeka", "Split",
-            "Dubrovnik", "Nitra", "Košice", "Žilina", "Banská Bystrica",
-            "Berlin", "Hamburg", "Cologne", "Frankfurt", "Stuttgart",
-            "Dresden", "Leipzig", "Nuremberg", "Bremen", "Hannover",
-            "Zurich", "Geneva", "Bern", "Basel", "Lucerne",
+            "Praha", "Vídeň", "Budapešť", "Krakov", "Bratislava",
+            "Varšava", "Lublaň", "Záhřeb", "Salcburk", "Mnichov",
+            "Brno", "Ostrava", "Plzeň", "Graz", "Linec",
+            "Innsbruck", "České Budějovice", "Olomouc", "Vratislav", "Poznaň",
+            "Gdaňsk", "Katovice", "Lodž", "Štětín", "Białystok",
+            "Maribor", "Celje", "Terst", "Rijeka", "Split",
+            "Dubrovník", "Nitra", "Košice", "Žilina", "Banská Bystrica",
+            "Berlín", "Hamburk", "Kolín nad Rýnem", "Frankfurt", "Stuttgart",
+            "Drážďany", "Lipsko", "Norimberk", "Brémy", "Hannover",
+            "Curych", "Ženeva", "Bern", "Basilej", "Lucern",
             "Lausanne", "St. Gallen", "Lugano", "Fribourg", "Winterthur",
             "Klagenfurt", "Villach", "St. Pölten", "Eisenstadt"
         ];
@@ -743,7 +743,7 @@
             const destination = document.getElementById('destination').value;
             const people = document.getElementById('people').value;
             const departure = document.getElementById('departure').value;
-            alert(`Searching for: ${destination || 'Any destination'}, ${people || 'Any number of people'}, departing ${departure || 'anytime'}`);
+            alert(`Hledání: ${destination || 'Jakákoli destinace'}, ${people || 'Libovolný počet osob'}, odjezd ${departure || 'kdykoli'}`);
         });
 
         // Main slider
@@ -849,16 +849,16 @@
             e.preventDefault();
             const date = document.getElementById('reserveDate').value;
             const people = document.getElementById('reservePeople').value;
-            alert(`Reservation confirmed for ${currentTripTitle}:\nDate: ${date}\nPeople: ${people}`);
+            alert(`Rezervace potvrzena pro ${currentTripTitle}:\nDatum: ${date}\nOsoby: ${people}`);
             popup.style.display = 'none';
             reserveForm.reset();
         });
 
         document.querySelectorAll('.book-now').forEach(button => {
             button.addEventListener('click', () => {
-                alert('Thank you for your interest! Booking functionality coming soon.');
+                alert('Děkujeme za váš zájem! Funkce rezervace bude brzy dostupná.');
             });
         });
     </script>
-</body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9227f4ca4839288a',t:'MTc0MjMzNDczNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
