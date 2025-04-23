@@ -703,7 +703,7 @@
                         <button class="trip-prev">❮</button>
                         <button class="trip-next">❯</button>
                     </div>
-                    <h3 اساسیلندي Alps</h3>
+                    <h3>Švýcarské Alpy</h3>
                     <p>5 dní ve Švýcarsku - objevte kouzlo Lucernu, historické Bern a dechberoucí Interlaken.</p>
                     <button class="detail-btn">Zobrazit detaily</button>
                 </div>
@@ -923,7 +923,7 @@
                 slides.forEach((slide, i) => {
                     slide.classList.toggle('active', i === index);
                     if (i === index) {
-                        cityName.textContent = slide.getAttribute('data-city');
+                        cityName.textContent = slide.getAttribute('data-city') || 'Unknown';
                     }
                 });
             }
@@ -1062,10 +1062,15 @@
         };
 
         function showPopupSlide(index, slides) {
+            if (slides.length === 0) {
+                popupCityName.textContent = 'No images available';
+                return;
+            }
             slides.forEach((slide, i) => {
                 slide.classList.toggle('active', i === index);
                 if (i === index) {
-                    popupCityName.textContent = slide.getAttribute('data-city');
+                    const city = slide.getAttribute('data-city') || 'Unknown';
+                    popupCityName.textContent = city;
                 }
             });
         }
@@ -1074,15 +1079,17 @@
             if (popupSlideInterval) {
                 clearInterval(popupSlideInterval);
             }
-            popupSlideInterval = setInterval(() => {
-                currentPopupSlide = (currentPopupSlide + 1) % slides.length;
-                showPopupSlide(currentPopupSlide, slides);
-            }, 3000);
+            if (slides.length > 1) {
+                popupSlideInterval = setInterval(() => {
+                    currentPopupSlide = (currentPopupSlide + 1) % slides.length;
+                    showPopupSlide(currentPopupSlide, slides);
+                }, 3000);
+            }
         }
 
         document.querySelectorAll('.detail-btn').forEach(button => {
             button.addEventListener('click', () => {
-                const tripCard = button.parentElement;
+                const tripCard = button.closest('.trip-card');
                 const title = tripCard.querySelector('h3').textContent;
                 const images = tripCard.querySelectorAll('.trip-slide');
                 const details = tripDetails[title];
@@ -1090,17 +1097,26 @@
                 // Set popup title
                 popupTitle.textContent = title;
 
-                // Populate popup slider
+                // Clear previous slides
                 popupSlidesContainer.innerHTML = '';
-                images.forEach(img => {
-                    const slide = document.createElement('img');
-                    slide.src = img.src;
-                    slide.alt = img.alt;
-                    slide.className = 'popup-slide';
-                    slide.setAttribute('data-city', img.getAttribute('data-city'));
-                    slide.style.display = 'none';
-                    popupSlidesContainer.appendChild(slide);
-                });
+
+                // Populate popup slider with images
+                if (images.length === 0) {
+                    popupSlidesContainer.innerHTML = '<p>No images available</p>';
+                    popupCityName.textContent = 'No images';
+                } else {
+                    images.forEach(img => {
+                        const slide = document.createElement('img');
+                        slide.src = img.src;
+                        slide.alt = img.alt || 'Trip image';
+                        slide.className = 'popup-slide';
+                        slide.setAttribute('data-city', img.getAttribute('data-city') || 'Unknown');
+                        slide.style.display = 'none';
+                        popupSlidesContainer.appendChild(slide);
+                    });
+                }
+
+                // Initialize popup slider
                 const popupSlides = popupSlidesContainer.querySelectorAll('.popup-slide');
                 currentPopupSlide = 0;
                 showPopupSlide(currentPopupSlide, popupSlides);
@@ -1122,6 +1138,7 @@
 
         document.querySelector('.popup-prev').addEventListener('click', () => {
             const popupSlides = popupSlidesContainer.querySelectorAll('.popup-slide');
+            if (popupSlides.length === 0) return;
             clearInterval(popupSlideInterval);
             currentPopupSlide = (currentPopupSlide - 1 + popupSlides.length) % popupSlides.length;
             showPopupSlide(currentPopupSlide, popupSlides);
@@ -1130,6 +1147,7 @@
 
         document.querySelector('.popup-next').addEventListener('click', () => {
             const popupSlides = popupSlidesContainer.querySelectorAll('.popup-slide');
+            if (popupSlides.length === 0) return;
             clearInterval(popupSlideInterval);
             currentPopupSlide = (currentPopupSlide + 1) % popupSlides.length;
             showPopupSlide(currentPopupSlide, popupSlides);
