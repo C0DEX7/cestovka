@@ -426,6 +426,7 @@
             width: 600px;
             max-width: 90%;
             text-align: center;
+            position: relative;
         }
 
         .popup-content h3 {
@@ -456,6 +457,19 @@
 
         .popup-slide.active {
             display: block;
+        }
+
+        .popup-city-name {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-size: 14px;
+            font-weight: bold;
+            z-index: 10;
         }
 
         .popup-prev, .popup-next {
@@ -683,7 +697,7 @@
                     <div class="trip-slider">
                         <div class="trip-slides">
                             <img src="trip/munich.jpg" alt="Mnichov" class="trip-slide active" data-city="Mnichov">
-                            <img src="trip/dresden.jpg" alt="Drážďany" class="trip-slide" data-city="Drážďany">
+                            <img src="trip/dresden.jpg" alt="Drážďarky" class="trip-slide" data-city="Drážďany">
                             <img src="trip/rothenburg.jpg" alt="Rothenburg" class="trip-slide" data-city="Rothenburg">
                         </div>
                         <button class="trip-prev">❮</button>
@@ -740,7 +754,8 @@
                         <div class="trip-slides">
                             <img src="trip/gdansk.jpg" alt="Gdaňsk" class="trip-slide active" data-city="Gdaňsk">
                             <img src="trip/torun.jpg" alt="Toruň" class="trip-slide" data-city="Toruň">
-                            <img src="trip/malbork.jpg" alt="Malbork" class="trip-slide" data-city="Malbork">
+                            <img src=" OK button is missing for this element.
+                            <img src="trip/malbork.jpg" alt="Malbork" class="trip-slide active" data-city="Malbork">
                         </div>
                         <button class="trip-prev">❮</button>
                         <button class="trip-next">❯</button>
@@ -806,7 +821,6 @@
                 <div class="popup-slides" id="popupSlides"></div>
                 <button class="popup-prev">❮</button>
                 <button class="popup-next">❯</button>
-                <div class="city-name" id="popupCityName"></div>
             </div>
             <div class="popup-details" id="popupDetails"></div>
             <button class="close-popup">Zavřít</button>
@@ -818,7 +832,7 @@
             "Praha", "Vídeň", "Budapešť", "Bratislava", "Salcburk",
             "Mnichov", "Krakov", "Varšava", "Auschwitz", "Lublaň",
             "Jezero Bled", "Postojna", "Drážďany", "Rothenburg",
-            "Lucern", "Bern", "Interlaken", "Vaduz", "Sargans",
+            "Lucern", "Bern", "Dresden", "Interlaken", "Vaduz", "Sargans",
             "Ruggell", "Český Krumlov", "Kutná Hora", "Neuschwanstein",
             "Innsbruck", "Garmisch-Partenkirchen", "Gdaňsk", "Toruň",
             "Malbork", "Brno", "Banská Bystrica", "Graz"
@@ -923,7 +937,7 @@
                 slides.forEach((slide, i) => {
                     slide.classList.toggle('active', i === index);
                     if (i === index) {
-                        cityName.textContent = slide.getAttribute('data-city') || 'Unknown';
+                        cityName.textContent = slide.getAttribute('data-city');
                     }
                 });
             }
@@ -945,8 +959,8 @@
         const popup = document.getElementById('detailPopup');
         const popupTitle = document.getElementById('popupTitle');
         const popupSlidesContainer = document.getElementById('popupSlides');
+        const popupSlider = document.getElementById('popupSlider');
         const popupDetails = document.getElementById('popupDetails');
-        const popupCityName = document.getElementById('popupCityName');
         let currentPopupSlide = 0;
         let popupSlideInterval = null;
 
@@ -1062,15 +1076,11 @@
         };
 
         function showPopupSlide(index, slides) {
-            if (slides.length === 0) {
-                popupCityName.textContent = 'No images available';
-                return;
-            }
             slides.forEach((slide, i) => {
                 slide.classList.toggle('active', i === index);
-                if (i === index) {
-                    const city = slide.getAttribute('data-city') || 'Unknown';
-                    popupCityName.textContent = city;
+                const cityName = popupSlider.querySelector('.popup-city-name');
+                if (cityName && i === index) {
+                    cityName.textContent = slide.getAttribute('data-city') || slide.alt;
                 }
             });
         }
@@ -1079,17 +1089,15 @@
             if (popupSlideInterval) {
                 clearInterval(popupSlideInterval);
             }
-            if (slides.length > 1) {
-                popupSlideInterval = setInterval(() => {
-                    currentPopupSlide = (currentPopupSlide + 1) % slides.length;
-                    showPopupSlide(currentPopupSlide, slides);
-                }, 3000);
-            }
+            popupSlideInterval = setInterval(() => {
+                currentPopupSlide = (currentPopupSlide + 1) % slides.length;
+                showPopupSlide(currentPopupSlide, slides);
+            }, 3000);
         }
 
         document.querySelectorAll('.detail-btn').forEach(button => {
             button.addEventListener('click', () => {
-                const tripCard = button.closest('.trip-card');
+                const tripCard = button.parentElement;
                 const title = tripCard.querySelector('h3').textContent;
                 const images = tripCard.querySelectorAll('.trip-slide');
                 const details = tripDetails[title];
@@ -1097,27 +1105,41 @@
                 // Set popup title
                 popupTitle.textContent = title;
 
-                // Clear previous slides
+                // Populate popup slider
                 popupSlidesContainer.innerHTML = '';
+                let hasValidImages = false;
+                images.forEach(img => {
+                    const slide = document.createElement('img');
+                    slide.src = img.src || 'https://via.placeholder.com/600x300?text=Obrázek+není+k+dispozici';
+                    slide.alt = img.alt || 'Obrázek zájezdu';
+                    slide.className = 'popup-slide';
+                    slide.setAttribute('data-city', img.getAttribute('data-city') || img.alt);
+                    slide.style.display = 'none';
+                    slide.onerror = () => {
+                        slide.src = 'https://via.placeholder.com/600x300?text=Obrázek+není+k+dispozici';
+                    };
+                    popupSlidesContainer.appendChild(slide);
+                    hasValidImages = true;
+                });
 
-                // Populate popup slider with images
-                if (images.length === 0) {
-                    popupSlidesContainer.innerHTML = '<p>No images available</p>';
-                    popupCityName.textContent = 'No images';
-                } else {
-                    images.forEach(img => {
-                        const slide = document.createElement('img');
-                        slide.src = img.src;
-                        slide.alt = img.alt || 'Trip image';
-                        slide.className = 'popup-slide';
-                        slide.setAttribute('data-city', img.getAttribute('data-city') || 'Unknown');
-                        slide.style.display = 'none';
-                        popupSlidesContainer.appendChild(slide);
-                    });
+                // Add city name element to popup slider
+                let cityName = popupSlider.querySelector('.popup-city-name');
+                if (!cityName) {
+                    cityName = document.createElement('div');
+                    cityName.className = 'popup-city-name';
+                    popupSlider.appendChild(cityName);
                 }
 
-                // Initialize popup slider
                 const popupSlides = popupSlidesContainer.querySelectorAll('.popup-slide');
+                if (!hasValidImages) {
+                    const slide = document.createElement('img');
+                    slide.src = 'https://via.placeholder.com/600x300?text=Žádné+obrázky+k+dispozici';
+                    slide.alt = 'Žádné obrázky';
+                    slide.className = 'popup-slide';
+                    slide.style.display = 'none';
+                    popupSlidesContainer.appendChild(slide);
+                }
+
                 currentPopupSlide = 0;
                 showPopupSlide(currentPopupSlide, popupSlides);
                 startPopupSlideInterval(popupSlides);
@@ -1138,7 +1160,6 @@
 
         document.querySelector('.popup-prev').addEventListener('click', () => {
             const popupSlides = popupSlidesContainer.querySelectorAll('.popup-slide');
-            if (popupSlides.length === 0) return;
             clearInterval(popupSlideInterval);
             currentPopupSlide = (currentPopupSlide - 1 + popupSlides.length) % popupSlides.length;
             showPopupSlide(currentPopupSlide, popupSlides);
@@ -1147,7 +1168,6 @@
 
         document.querySelector('.popup-next').addEventListener('click', () => {
             const popupSlides = popupSlidesContainer.querySelectorAll('.popup-slide');
-            if (popupSlides.length === 0) return;
             clearInterval(popupSlideInterval);
             currentPopupSlide = (currentPopupSlide + 1) % popupSlides.length;
             showPopupSlide(currentPopupSlide, popupSlides);
