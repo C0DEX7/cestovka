@@ -703,7 +703,7 @@
                         <button class="trip-prev">❮</button>
                         <button class="trip-next">❯</button>
                     </div>
-                    <h3>Švýcarské Alpy</h3>
+                    <h3 اساسیلندي Alps</h3>
                     <p>5 dní ve Švýcarsku - objevte kouzlo Lucernu, historické Bern a dechberoucí Interlaken.</p>
                     <button class="detail-btn">Zobrazit detaily</button>
                 </div>
@@ -806,6 +806,7 @@
                 <div class="popup-slides" id="popupSlides"></div>
                 <button class="popup-prev">❮</button>
                 <button class="popup-next">❯</button>
+                <div class="city-name" id="popupCityName"></div>
             </div>
             <div class="popup-details" id="popupDetails"></div>
             <button class="close-popup">Zavřít</button>
@@ -945,6 +946,7 @@
         const popupTitle = document.getElementById('popupTitle');
         const popupSlidesContainer = document.getElementById('popupSlides');
         const popupDetails = document.getElementById('popupDetails');
+        const popupCityName = document.getElementById('popupCityName');
         let currentPopupSlide = 0;
         let popupSlideInterval = null;
 
@@ -1062,6 +1064,9 @@
         function showPopupSlide(index, slides) {
             slides.forEach((slide, i) => {
                 slide.classList.toggle('active', i === index);
+                if (i === index) {
+                    popupCityName.textContent = slide.getAttribute('data-city');
+                }
             });
         }
 
@@ -1092,6 +1097,7 @@
                     slide.src = img.src;
                     slide.alt = img.alt;
                     slide.className = 'popup-slide';
+                    slide.setAttribute('data-city', img.getAttribute('data-city'));
                     slide.style.display = 'none';
                     popupSlidesContainer.appendChild(slide);
                 });
