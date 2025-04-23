@@ -251,33 +251,33 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            background: #ffcc00; /* Changed to yellow for better visibility */
-            color: #00205b;      /* Dark blue text for contrast */
+            background: #ffcc00;
+            color: #00205b;
             border: none;
-            padding: 12px 16px;  /* Increased size */
+            padding: 12px 16px;
             cursor: pointer;
-            font-size: 20px;     /* Larger arrows */
-            border-radius: 50%;  /* Circular shape */
-            opacity: 0.9;        /* Slightly transparent */
+            font-size: 20px;
+            border-radius: 50%;
+            opacity: 0.9;
             transition: opacity 0.3s ease, background-color 0.3s ease;
-            z-index: 11;         /* Ensure above city name */
+            z-index: 11;
         }
 
         .trip-prev:hover, .trip-next:hover {
-            opacity: 1;          /* Full opacity on hover */
-            background: #e6b800; /* Darker yellow on hover */
+            opacity: 1;
+            background: #e6b800;
         }
 
         .trip-prev {
-            left: 15px;         /* Slightly more padding from edge */
+            left: 15px;
         }
 
         .trip-next {
-            right: 15px;        /* Slightly more padding from edge */
+            right: 15px;
         }
 
-        .reserve-btn {
-            background-color: #003087;
+        .detail-btn {
+            background-color: #0055b3;
             color: white;
             padding: 10px 20px;
             border: none;
@@ -287,8 +287,8 @@
             margin-top: 15px;
         }
 
-        .reserve-btn:hover {
-            background-color: #00205b;
+        .detail-btn:hover {
+            background-color: #003087;
         }
 
         .slider-section {
@@ -423,7 +423,7 @@
             background: #3a3a3a;
             padding: 20px;
             border-radius: 8px;
-            width: 400px;
+            width: 600px;
             max-width: 90%;
             text-align: center;
         }
@@ -433,50 +433,83 @@
             margin-bottom: 20px;
         }
 
-        .popup-content form {
+        .popup-slider {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            overflow: hidden;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .popup-slides {
             display: flex;
-            flex-direction: column;
-            gap: 15px;
+            transition: transform 0.5s ease;
         }
 
-        .popup-content input, .popup-content select {
-            padding: 12px 15px;
-            font-size: 16px;
-            border: 2px solid #003087;
-            border-radius: 8px;
-            background: #4a4a4a;
-            color: #ffffff;
+        .popup-slide {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            display: none;
         }
 
-        .popup-content select {
-            appearance: none;
-            background: #4a4a4a url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"><path fill="%23ffffff" d="M7 10l5 5 5-5z"/></svg>') no-repeat right 15px center;
-            padding-right: 35px;
+        .popup-slide.active {
+            display: block;
         }
 
-        .popup-content input[type="date"]::-webkit-calendar-picker-indicator {
-            filter: invert(100%);
-        }
-
-        .popup-content button {
-            background-color: #ffcc00;
+        .popup-prev, .popup-next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #ffcc00;
             color: #00205b;
-            padding: 12px;
             border: none;
-            font-size: 16px;
-            font-weight: bold;
+            padding: 12px 16px;
             cursor: pointer;
-            border-radius: 8px;
-            transition: background-color 0.3s ease;
+            font-size: 20px;
+            border-radius: 50%;
+            opacity: 0.9;
+            transition: opacity 0.3s ease, background-color 0.3s ease;
         }
 
-        .popup-content button:hover {
-            background-color: #e6b800;
+        .popup-prev:hover, .popup-next:hover {
+            opacity: 1;
+            background: #e6b800;
+        }
+
+        .popup-prev {
+            left: 15px;
+        }
+
+        .popup-next {
+            right: 15px;
+        }
+
+        .popup-details {
+            text-align: left;
+            color: #cccccc;
+            font-size: 16px;
+        }
+
+        .popup-details p {
+            margin-bottom: 10px;
+        }
+
+        .popup-details ul {
+            list-style-type: disc;
+            padding-left: 20px;
+            margin-bottom: 20px;
         }
 
         .close-popup {
             background-color: #666;
             color: white;
+            padding: 12px 20px;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 8px;
             margin-top: 10px;
         }
 
@@ -574,7 +607,7 @@
                     </div>
                     <h3>Zájezd po císařských metropolích</h3>
                     <p>7 dní objevování Vídně, Budapešti a Prahy. Navštivte velkolepé paláce, historické hrady a okouzlující stará města.</p>
-                    <button class="reserve-btn">Rezervovat nyní</button>
+                    <button class="detail-btn">Zobrazit detaily</button>
                 </div>
                 <div class="trip-card">
                     <div class="trip-slider">
@@ -588,7 +621,7 @@
                     </div>
                     <h3>Cesta podél Dunaje</h3>
                     <p>5 dní plavby z Bratislavy do Budapešti se zastávkami ve Vídni a malebných říčních vesnicích.</p>
-                    <button class="reserve-btn">Rezervovat nyní</button>
+                    <button class="detail-btn">Zobrazit detaily</button>
                 </div>
                 <div class="trip-card">
                     <div class="trip-slider">
@@ -602,7 +635,7 @@
                     </div>
                     <h3>České dobrodružství</h3>
                     <p>6 dní po České republice - Praha, Český Krumlov a kostnice v Kutné Hoře.</p>
-                    <button class="reserve-btn">Rezervovat nyní</button>
+                    <button class="detail-btn">Zobrazit detaily</button>
                 </div>
                 <div class="trip-card">
                     <div class="trip-slider">
@@ -616,7 +649,77 @@
                     </div>
                     <h3>Alpský útěk</h3>
                     <p>4 dny v Salcburku a Mnichově s úchvatnými výhledy na hory a bavorskou kulturou.</p>
-                    <button class="reserve-btn">Rezervovat nyní</button>
+                    <button class="detail-btn">Zobrazit detaily</button>
+                </div>
+                <div class="trip-card">
+                    <div class="trip-slider">
+                        <div class="trip-slides">
+                            <img src="trip/prague.jpg" alt="Krakov" class="trip-slide active" data-city="Krakov">
+                            <img src="trip/vienna.jpg" alt="Varšava" class="trip-slide" data-city="Varšava">
+                            <img src="trip/budapest.jpg" alt="Auschwitz" class="trip-slide" data-city="Auschwitz">
+                        </div>
+                        <button class="trip-prev">❮</button>
+                        <button class="trip-next">❯</button>
+                    </div>
+                    <h3>Krakov a Varšava Explorer</h3>
+                    <p>6 dní v Polsku - prozkoumejte historické centrum Krakova, královský hrad Wawel a kulturní Varšavu.</p>
+                    <button class="detail-btn">Zobrazit detaily</button>
+                </div>
+                <div class="trip-card">
+                    <div class="trip-slider">
+                        <div class="trip-slides">
+                            <img src="trip/alps.jpeg" alt="Lublaň" class="trip-slide active" data-city="Lublaň">
+                            <img src="trip/saltzburg.jpg" alt="Jezero Bled" class="trip-slide" data-city="Jezero Bled">
+                            <img src="trip/munich.jpg" alt="Postojna" class="trip-slide" data-city="Postojna">
+                        </div>
+                        <button class="trip-prev">❮</button>
+                        <button class="trip-next">❯</button>
+                    </div>
+                    <h3>Alpské a Jadranské Slovinsko</h3>
+                    <p>5 dní ve Slovinsku - navštivte malebnou Lublaň, kouzelné jezero Bled a jeskyně Postojna.</p>
+                    <button class="detail-btn">Zobrazit detaily</button>
+                </div>
+                <div class="trip-card">
+                    <div class="trip-slider">
+                        <div class="trip-slides">
+                            <img src="trip/munich.jpg" alt="Mnichov" class="trip-slide active" data-city="Mnichov">
+                            <img src="trip/prague.jpg" alt="Drážďany" class="trip-slide" data-city="Drážďany">
+                            <img src="trip/alps.jpeg" alt="Rothenburg" class="trip-slide" data-city="Rothenburg">
+                        </div>
+                        <button class="trip-prev">❮</button>
+                        <button class="trip-next">❯</button>
+                    </div>
+                    <h3>Romantická cesta Německem</h3>
+                    <p>7 dní po německé Romantické cestě - Mnichov, Drážďany a středověký Rothenburg ob der Tauber.</p>
+                    <button class="detail-btn">Zobrazit detaily</button>
+                </div>
+                <div class="trip-card">
+                    <div class="trip-slider">
+                        <div class="trip-slides">
+                            <img src="trip/alps.jpeg" alt="Lucern" class="trip-slide active" data-city="Lucern">
+                            <img src="trip/saltzburg.jpg" alt="Bern" class="trip-slide" data-city="Bern">
+                            <img src="trip/munich.jpg" alt="Interlaken" class="trip-slide" data-city="Interlaken">
+                        </div>
+                        <button class="trip-prev">❮</button>
+                        <button class="trip-next">❯</button>
+                    </div>
+                    <h3>Švýcarské Alpy</h3>
+                    <p>5 dní ve Švýcarsku - objevte kouzlo Lucernu, historické Bern a dechberoucí Interlaken.</p>
+                    <button class="detail-btn">Zobrazit detaily</button>
+                </div>
+                <div class="trip-card">
+                    <div class="trip-slider">
+                        <div class="trip-slides">
+                            <img src="trip/alps.jpeg" alt="Vaduz" class="trip-slide active" data-city="Vaduz">
+                            <img src="trip/saltzburg.jpg" alt="Sargans" class="trip-slide" data-city="Sargans">
+                            <img src="trip/munich.jpg" alt="Ruggell" class="trip-slide" data-city="Ruggell">
+                        </div>
+                        <button class="trip-prev">❮</button>
+                        <button class="trip-next">❯</button>
+                    </div>
+                    <h3>Lichtenštejnské kouzlo</h3>
+                    <p>4 dny v Lichtenštejnsku - navštivte Vaduz, alpské stezky a historické památky tohoto knížectví.</p>
+                    <button class="detail-btn">Zobrazit detaily</button>
                 </div>
             </div>
         </div>
@@ -654,49 +757,27 @@
         </div>
     </footer>
 
-    <div class="popup" id="reservePopup">
+    <div class="popup" id="detailPopup">
         <div class="popup-content">
-            <h3>Rezervujte si svůj zájezd</h3>
-            <form id="reserveForm">
-                <input type="date" id="reserveDate" required>
-                <select id="reservePeople" required>
-                    <option value="" disabled selected>Kolik osob?</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
-                    <option value="11">11</option>
-                    <option value="12">12</option>
-                    <option value="13">13</option>
-                    <option value="14">14</option>
-                    <option value="15">15</option>
-                    <option value="16">16</option>
-                    <option value="17">17</option>
-                    <option value="18">18</option>
-                    <option value="19">19</option>
-                    <option value="20">20</option>
-                </select>
-                <button type="submit">Potvrdit rezervaci</button>
-                <button type="button" class="close-popup">Zavřít</button>
-            </form>
+            <h3 id="popupTitle"></h3>
+            <div class="popup-slider" id="popupSlider">
+                <div class="popup-slides" id="popupSlides"></div>
+                <button class="popup-prev">❮</button>
+                <button class="popup-next">❯</button>
+            </div>
+            <div class="popup-details" id="popupDetails"></div>
+            <button class="close-popup">Zavřít</button>
         </div>
     </div>
 
     <script>
         const destinations = [
             "Praha", "Vídeň", "Budapešť", "Krakov", "Bratislava",
-            "Varšava", "Lublaň", "Záhřeb", "Salcburk", "Mnichov",
+            "Varšava", "Lublaň", "Salcburk", "Mnichov",
             "Brno", "Ostrava", "Plzeň", "Graz", "Linec",
             "Innsbruck", "České Budějovice", "Olomouc", "Vratislav", "Poznaň",
             "Gdaňsk", "Katovice", "Lodž", "Štětín", "Białystok",
-            "Maribor", "Celje", "Terst", "Rijeka", "Split",
-            "Dubrovník", "Nitra", "Košice", "Žilina", "Banská Bystrica",
+            "Maribor", "Celje", "Vaduz", "Sargans", "Ruggell",
             "Berlín", "Hamburk", "Kolín nad Rýnem", "Frankfurt", "Stuttgart",
             "Drážďany", "Lipsko", "Norimberk", "Brémy", "Hannover",
             "Curych", "Ženeva", "Bern", "Basilej", "Lucern",
@@ -822,36 +903,178 @@
         });
 
         // Popup functionality
-        const popup = document.getElementById('reservePopup');
-        const reserveForm = document.getElementById('reserveForm');
-        let currentTripTitle = '';
+        const popup = document.getElementById('detailPopup');
+        const popupTitle = document.getElementById('popupTitle');
+        const popupSlidesContainer = document.getElementById('popupSlides');
+        const popupDetails = document.getElementById('popupDetails');
+        let currentPopupSlide = 0;
+        let popupSlideInterval = null;
 
-        document.querySelectorAll('.reserve-btn').forEach(button => {
+        const tripDetails = {
+            "Zájezd po císařských metropolích": {
+                duration: "7 dní",
+                description: "Objevte historické a kulturní bohatství střední Evropy na této nezapomenutelné cestě.",
+                highlights: [
+                    "Prohlídka Pražského hradu a Staroměstského náměstí",
+                    "Návštěva Schönbrunnského paláce ve Vídni",
+                    "Plavba po Dunaji v Budapešti"
+                ]
+            },
+            "Cesta podél Dunaje": {
+                duration: "5 dní",
+                description: "Užijte si malebnou plavbu podél Dunaje s návštěvami klíčových měst a vesnic.",
+                highlights: [
+                    "Historické centrum Bratislavy",
+                    "Kulturní památky Vídně",
+                    "Budapešťský parlament a lázně"
+                ]
+            },
+            "České dobrodružství": {
+                duration: "6 dní",
+                description: "Prozkoumejte kouzlo České republiky od hlavního města po malebné městečky.",
+                highlights: [
+                    "Karlův most a Pražský hrad",
+                    "Středověké uličky Českého Krumlova",
+                    "Kostnice v Kutné Hoře"
+                ]
+            },
+            "Alpský útěk": {
+                duration: "4 dny",
+                description: "Užijte si alpské scenérie a bohatou kulturu Rakouska a Německa.",
+                highlights: [
+                    "Mozartův Salcburk",
+                    "Bavorská kultura v Mnichově",
+                    "Výhledy na Alpy"
+                ]
+            },
+            "Krakov a Varšava Explorer": {
+                duration: "6 dní",
+                description: "Objevte bohatou historii a kulturu Polska na této fascinující cestě.",
+                highlights: [
+                    "Královský hrad Wawel v Krakově",
+                    "Historické centrum Varšavy",
+                    "Návštěva památníku Auschwitz"
+                ]
+            },
+            "Alpské a Jadranské Slovinsko": {
+                duration: "5 dní",
+                description: "Prozkoumejte přírodní krásy a kulturní poklady Slovinska.",
+                highlights: [
+                    "Malebná Lublaň a její mosty",
+                    "Kouzelné jezero Bled",
+                    "Jeskyně Postojna"
+                ]
+            },
+            "Romantická cesta Německem": {
+                duration: "7 dní",
+                description: "Cesta po malebných městech a historických památkách Německa.",
+                highlights: [
+                    "Středověký Rothenburg ob der Tauber",
+                    "Kulturní Drážďany",
+                    "Bavorský Mnichov"
+                ]
+            },
+            "Švýcarské Alpy": {
+                duration: "5 dní",
+                description: "Objevte dechberoucí přírodu a historická města Švýcarska.",
+                highlights: [
+                    "Kaplický most v Lucernu",
+                    "Historické centrum Bernu",
+                    "Alpské scenérie v Interlakenu"
+                ]
+            },
+            "Lichtenštejnské kouzlo": {
+                duration: "4 dny",
+                description: "Prozkoumejte malé, ale okouzlující knížectví Lichtenštejnsko.",
+                highlights: [
+                    "Hrad Vaduz",
+                    "Alpské stezky v Sargans",
+                    "Kulturní památky v Ruggell"
+                ]
+            }
+        };
+
+        function showPopupSlide(index, slides) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+        }
+
+        function startPopupSlideInterval(slides) {
+            if (popupSlideInterval) {
+                clearInterval(popupSlideInterval);
+            }
+            popupSlideInterval = setInterval(() => {
+                currentPopupSlide = (currentPopupSlide + 1) % slides.length;
+                showPopupSlide(currentPopupSlide, slides);
+            }, 3000);
+        }
+
+        document.querySelectorAll('.detail-btn').forEach(button => {
             button.addEventListener('click', () => {
-                currentTripTitle = button.parentElement.querySelector('h3').textContent;
+                const tripCard = button.parentElement;
+                const title = tripCard.querySelector('h3').textContent;
+                const images = tripCard.querySelectorAll('.trip-slide');
+                const details = tripDetails[title];
+
+                // Set popup title
+                popupTitle.textContent = title;
+
+                // Populate popup slider
+                popupSlidesContainer.innerHTML = '';
+                images.forEach(img => {
+                    const slide = document.createElement('img');
+                    slide.src = img.src;
+                    slide.alt = img.alt;
+                    slide.className = 'popup-slide';
+                    slide.style.display = 'none';
+                    popupSlidesContainer.appendChild(slide);
+                });
+                const popupSlides = popupSlidesContainer.querySelectorAll('.popup-slide');
+                currentPopupSlide = 0;
+                showPopupSlide(currentPopupSlide, popupSlides);
+                startPopupSlideInterval(popupSlides);
+
+                // Populate popup details
+                popupDetails.innerHTML = `
+                    <p><strong>Délka zájezdu:</strong> ${details.duration}</p>
+                    <p>${details.description}</p>
+                    <ul>
+                        ${details.highlights.map(h => `<li>${h}</li>`).join('')}
+                    </ul>
+                `;
+
+                // Show popup
                 popup.style.display = 'flex';
             });
         });
 
+        document.querySelector('.popup-prev').addEventListener('click', () => {
+            const popupSlides = popupSlidesContainer.querySelectorAll('.popup-slide');
+            clearInterval(popupSlideInterval);
+            currentPopupSlide = (currentPopupSlide - 1 + popupSlides.length) % popupSlides.length;
+            showPopupSlide(currentPopupSlide, popupSlides);
+            startPopupSlideInterval(popupSlides);
+        });
+
+        document.querySelector('.popup-next').addEventListener('click', () => {
+            const popupSlides = popupSlidesContainer.querySelectorAll('.popup-slide');
+            clearInterval(popupSlideInterval);
+            currentPopupSlide = (currentPopupSlide + 1) % popupSlides.length;
+            showPopupSlide(currentPopupSlide, popupSlides);
+            startPopupSlideInterval(popupSlides);
+        });
+
         document.querySelector('.close-popup').addEventListener('click', () => {
             popup.style.display = 'none';
-            reserveForm.reset();
+            clearInterval(popupSlideInterval);
         });
 
         popup.addEventListener('click', (e) => {
             if (e.target === popup) {
                 popup.style.display = 'none';
-                reserveForm.reset();
+                clearInterval(popupSlideInterval);
             }
-        });
-
-        reserveForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const date = document.getElementById('reserveDate').value;
-            const people = document.getElementById('reservePeople').value;
-            alert(`Rezervace potvrzena pro ${currentTripTitle}:\nDatum: ${date}\nOsoby: ${people}`);
-            popup.style.display = 'none';
-            reserveForm.reset();
         });
 
         document.querySelectorAll('.book-now').forEach(button => {
@@ -860,5 +1083,5 @@
             });
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9227f4ca4839288a',t:'MTc0MjMzNDczNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</body>
 </html>
